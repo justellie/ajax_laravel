@@ -14,6 +14,7 @@ class UserController extends Controller
    
     public function index()
     {
+        $this->authorize('index',User::class);
         //Uso DataTables para la grilla con Ajax
         if(request()->ajax()) {
             return datatables()->of(User::select([
@@ -47,6 +48,7 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)//Hago uso de validador de Request que se encuentra en la direccion \Http\Requests\
     {
+        $this->authorize('create',User::class);
         $user=$request->validated();//Valido la peticion 
         $user['password'] = Hash::make($request->password);
         $user=User::create($user);
@@ -62,6 +64,7 @@ class UserController extends Controller
     }
     public function update(StoreUserRequest $request)
     {
+        $this->authorize('update',User::class);
         $user_id=$request->id;
         $user=$request->validated();//Valido de igual forma como en la creacion 
         $user= User::where("id", $user_id)->update($request->all()); // actualizo los valores
@@ -76,6 +79,13 @@ class UserController extends Controller
 
 
     }
+    public function show($user)
+    {
+        $user=User::findOrFail($user);
+        $this->authorize('view',$user);
+        return view('users.show',compact('user'));
+        
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -84,6 +94,8 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($user_id) {
+        $this->authorize('delete',User::class);
+
         $user = User::where("id", $user_id)->delete();//Busco y destruyo
         if($user == 1) {
             return response()->json(["status" => "success", "message" => "Success! Usuario deleted"]);

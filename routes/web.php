@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use App\Policies\UserPolicy;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,11 +15,15 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Auth::routes();
 
-Route::get('users', [UserController::class, 'index']);
+Route::get('users', [UserController::class, 'index'])->name('users');;
 
 Route::post('user', [UserController::class, 'store']);
 
 Route::put('user', [UserController::class, 'update']);
 
 Route::delete('user/{user_id}', [UserController::class, 'destroy']);
+Route::get('user/{user_id}', [UserController::class, 'show'])->name('user.view');
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

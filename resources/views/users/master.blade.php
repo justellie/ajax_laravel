@@ -8,6 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
   </head>
   <body>
+    @include('nav')
     <div class="container mt-5">
         <h4 class="text-center font-weight-bold"> Control de usuarios </h4>
 
@@ -22,5 +23,6 @@
   <link  href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
   <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="{{asset('js/script.js')}}"></script>
+
   </body>
 </html>

@@ -1,5 +1,5 @@
 @extends('users.master')
-@section('title') User Listing @endsection
+@section('title') Lista de Usuarios @endsection
 @section('content')
 
 <style>
