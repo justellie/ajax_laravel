@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MailWasSendEvent;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use DataTables;
 use Carbon\Carbon;
+use App\Mail\UserMail;
+use App\Models\MailUser;
+use Illuminate\Support\Facades\Mail;
+
 
 class UserController extends Controller
 {
@@ -104,4 +109,35 @@ class UserController extends Controller
             return response()->json(["status" => "failed", "message" => "Alert! Usuario not deleted"]);
         }
     }
+
+
+    public function createMail($user)
+    {
+        
+           $user=User::findOrFail($user);//Busco al usuario
+           $this->authorize('view',$user);//valido que este autorizado a enviar mensajes
+            return view('contact.create',compact('user'));//lo envio a la pagina de formulario
+        
+ 
+    }
+    public function storeMail($user)
+    {
+        //dd($this->validateRequest());
+        $data=$this->validateRequestMail();//Valida que la data este bien 
+        $user=User::findOrFail($user);//Obtiene el usario que envia el corre
+        $data['status']='Por enviar';//Lo pone en la cola 
+        $data['id']=MailUser::create($data)->id;// Obtiene el id para hacer una busqueda luego 
+        event(new MailWasSendEvent($data));//lo envia al evento
+        return redirect(route('user.view',$user->id));
+    }
+    private function validateRequestMail()
+    {
+        return request()->validate([
+            'asunto'=>'required',
+            'email'=>'required|email',
+            'message'=>'required',
+            'user_id'=>'required'
+            ]);
+
+    } 
 }

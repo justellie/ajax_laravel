@@ -25,6 +25,25 @@
     <p><strong>Fecha de nacimiento </strong> {{$user->birthday}}</p>
     </div>
 </div>
+<table class="table table-striped mt-4">
+    <thead>
+        <th> Email </th>
+        <th> Asunto </th>
+        <th> Mensaje </th>
+        <th> Estatus </th>
+    </thead>
+
+    <tbody>
+        @foreach ($user->mails; as $mail)
+            <tr>
+                <td> {{$mail->email}} </td>
+                <td> {{$mail->asunto}} </td>
+                <td> {{$mail->message}} </td>
+                <td> {{$mail->status}} </td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
 
 
 @endsection

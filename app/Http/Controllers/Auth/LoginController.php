@@ -28,13 +28,13 @@ class LoginController extends Controller
      */
     public function redirectTo()
     {
-        //dd(auth()->user()->email,auth()->user()->id);
-
+        //Envia al administrador directo a las los usuarios         
         if (auth()->user()->email==='admin@admin') {
             return 'users';
         } 
         else {
-            return '/user/'.auth()->user()->id;
+            //Envia al usuario directo a su perfil
+            return route('user.view',auth()->user()->id);
         }
     }
 

@@ -14,7 +14,16 @@
             <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                     <a class="nav-link " aria-current="page" href="{{action([App\Http\Controllers\HomeController::class, 'index'])}}">Dashboard</a>
-            </li>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " aria-current="page" href="/user/{{ Auth::user()->id }}">Perfil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/users">Lista de Usuarios</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/{{ Auth::user()->id }}/mail">Enviar Mail</a>
+                </li>
             </ul>
 
             <!-- Right Side Of Navbar -->
@@ -24,12 +33,6 @@
                 @if (Route::has('login'))
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                </li>
-                @endif
-
-                @if (Route::has('register'))
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                 </li>
                 @endif
                 @else
